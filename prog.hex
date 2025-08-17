@@ -1,0 +1,17 @@
+20080005  // 0: addi  $t0,$zero,5
+20090007  // 1: addi  $t1,$zero,7
+00000000  // 2: nop
+00000000  // 3: nop          (space so ADD reads after both addi WB)
+01095020  // 4: add   $t2,$t0,$t1
+00000000  // 5: nop
+00000000  // 6: nop          (space so SW reads $t2 after ADD WB)
+AC0A0000  // 7: sw    $t2,0($zero)
+8C0B0000  // 8: lw    $t3,0($zero)
+00000000  // 9: nop
+00000000  // 10: nop         (space so BEQ reads $t3 after LW WB)
+114B0002  // 11: beq   $t2,$t3,label_equal  (target at index 14)
+00000000  // 12: nop         (will be flushed on taken branch)
+00000000  // 13: nop
+20020001  // 14: label_equal: addi $v0,$zero,1
+0800000F  // 15: j end       (end at index 15 -> self-loop)
+0800000F  // 16: end: j end  (optional duplicate for clarity)
